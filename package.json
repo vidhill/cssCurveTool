@@ -1,0 +1,22 @@
+{
+  "name": "css-curve-tool",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vidhill/cssCurveTool.git"
+  },
+  "author": "David Hill",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/vidhill/cssCurveTool/issues"
+  },
+  "homepage": "https://github.com/vidhill/cssCurveTool#readme",
+  "dependencies": {
+    "snapsvg": "^0.4.0"
+  }
+}
