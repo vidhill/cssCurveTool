@@ -55,24 +55,34 @@
             height: 15
         };
         var calculateXpos = function(perc){
-          return timeLine.xPos + (timeLine.width * perc);
+            return timeLine.xPos + (timeLine.width * perc);
         };
 
-        /*
-        var calculateYPosFactory = function (maxYVal, min) {
+        var calculateYPosFactory = function (vals) {
 
-            var yScale = timeLine.height/
+            var { maxVal, minVal } = vals;
 
-            return function(value){
-                return timeLine.xPos + (timeLine.width * perc);
+            var distance = maxVal - minVal;
+
+            return function(val){
+                var factor = (val + Math.abs(minVal))/distance;
+
+                return timeLine.yPos - (timeLine.height * factor);
             };
 
         };
-*/
-        // var calculateXpos = calculateYPosFactory();
-        var calculateYpos = function(val){
-            return timeLine.yPos - (timeLine.height * val);
+
+        var valsArr = keyFrames.map(key => key.opacity);
+
+        var maxMin = {
+            maxVal: Math.max.apply(null, valsArr),
+            minVal: Math.min.apply(null, valsArr)
         };
+
+
+
+        // var calculateXpos = calculateYPosFactory();
+        var calculateYpos = calculateYPosFactory(maxMin);
 
         var points = [];
 
@@ -106,7 +116,7 @@
                     textAnchor: 'middle'
                 });
 
-            var pathPoint = doc.circle(point.x, point.y, 5)
+            var pathPoint = doc.circle(point.x, point.y, 5);
 
             g.add(line, thumb, labelText, pathPoint);
 
@@ -121,7 +131,7 @@
 
     var myKeyFrames = [
         { transform: 'scale(1)', opacity: 1, offset: 0 },
-        { transform: 'scale(.5)', opacity: .5, offset: .3 },
+        { transform: 'scale(.5)', opacity: -0.05, offset: .3 },
         { transform: 'scale(.667)', opacity: .667, offset: .7875 },
         { transform: 'scale(.6)', opacity: .6, offset: 1 }
     ];
