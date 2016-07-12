@@ -27,7 +27,6 @@ var gulp = require('gulp'),
     b.on('update', bundle); // on any dep update, runs the bundler
     b.on('log', gutil.log); // output build logs to terminal
 
-    var b2 = browserify(browserifyOpts2);
 
 
     function bundle(){
