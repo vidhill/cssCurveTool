@@ -2,9 +2,8 @@
  * Created by davidhill on 11/07/2016.
  */
 
-(function (Snap) {
-
-
+    var helpers = require('./helpers'),
+        init = require('./setup');
 
     var docSetting = {
         width: 800,
@@ -15,37 +14,8 @@
     };
 
     var doc = Snap(docSetting.width, docSetting.height);
-    var timeLine = {
-        width: (docSetting.width - (docSetting.sidePad * 2)),
-        height: 300,
-        xPos: docSetting.sidePad,
-        yPos: docSetting.height - docSetting.bottomPad
-    };
 
-
-    (function init() {
-
-        doc.rect(0, 0, docSetting.width, docSetting.height).attr({
-            fill: docSetting.bgColour
-        });
-
-        doc.path(`M${timeLine.xPos},${timeLine.yPos},h${timeLine.width}`)
-            .attr({
-                stroke: "#000",
-                strokeWidth: 2
-            });
-
-    })();
-
-    var helpers = {
-        decimalToPercentage: function(dec){
-            return ( dec * 100 ).toFixed(2) + '%';
-        },
-        toTimeScale: function (val, total) {
-            return (total*val).toString() + 'ms';
-        }
-    };
-
+    var timeLine = init(doc, docSetting);
 
 
 
@@ -124,7 +94,28 @@
 
         });
 
-        console.log(points);
+        function pointsToThings(point, index, arr) {
+            var em;
+            if(index === 0 ){
+                em = 'M'
+            } else if(index !== arr.length) {
+                em = 'L'
+            }
+
+
+            return em + point.x + ' ' + point.y;
+        }
+
+        var foo = points.map(pointsToThings);
+
+        console.log(foo.join(' '));
+
+        doc.path(foo.join(' '))
+            .attr({
+                stroke: "#0000FF",
+                strokeWidth: 2,
+                fill: 'none'
+            })
     }
 
 
@@ -137,11 +128,3 @@
     ];
 
     addKeyFramesToTimeline(myKeyFrames);
-
-
-
-
-
-})(Snap);
-
-
