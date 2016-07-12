@@ -13,18 +13,22 @@ var gulp = require('gulp'),
     gutil = require('gulp-util')
     ;
 
-
-    var b = browserify({
+    var browserifyOpts = {
         entries: ['src/js/app.js'],
         debug: true,
         cache: {},
         packageCache: {},
         plugin: [watchify]
-    });
+    };
 
-    b.transform('babelify', { presets: [ 'es2015' ] } )
+    var b = browserify(browserifyOpts);
+
+    b.transform('babelify', { presets: [ 'es2015' ] } );
     b.on('update', bundle); // on any dep update, runs the bundler
     b.on('log', gutil.log); // output build logs to terminal
+
+    var b2 = browserify(browserifyOpts2);
+
 
     function bundle(){
         return b.bundle()
@@ -37,23 +41,12 @@ var gulp = require('gulp'),
             .pipe(gulp.dest('./dist/js'));
     }
 
-    gulp.task("browser", bundle);
+    gulp.task("watchjs", bundle);
 
-    gulp.task("js", () => {
-        return gulp.src("src/js/*.js")
-            .pipe(babel())
-            .pipe(gulp.dest("dist/js"));
-    });
 
     gulp.task("html", () => {
         return gulp.src("src/*.html")
             .pipe(gulp.dest("dist"));
     });
 
-    gulp.task('default', ['js', 'html']);
-
-    gulp.task('watch', () => {
-        var watcher = gulp.watch('src/js/*.js', ['js']);
-
-
-    });
+    gulp.task('default', ['html']);
