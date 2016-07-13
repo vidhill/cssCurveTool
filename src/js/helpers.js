@@ -1,5 +1,5 @@
 
-module.exports = {
+export default {
     decimalToPercentage: function(dec){
       return ( dec * 100 ).toFixed(2) + '%';
     },

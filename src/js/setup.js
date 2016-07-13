@@ -2,7 +2,7 @@
  * Created by davidhill on 12/07/2016.
  */
 
-module.exports = function (snap, docSetting) {
+export default function (snap, docSetting) {
     var tLineSetting = {
         width: (docSetting.width - (docSetting.sidePad * 2)),
         height: 300,

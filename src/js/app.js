@@ -1,9 +1,12 @@
 /**
  * Created by davidhill on 11/07/2016.
  */
-
+    /*
     var helpers = require('./helpers'),
         init = require('./setup');
+        */
+    import helpers from './helpers.js';
+    import init from './setup.js';
 
     var docSetting = {
         width: 800,
