@@ -121,7 +121,7 @@
         var pointStrings = pointArr.map(pointsToPaths);
 
 
-        var path = ""
+        var path = "";
 
         path += createSegment(pointArr[0], pointArr[1]); // curve 1
         path += createSegment(pointArr[1], pointArr[2]); // curve 2
