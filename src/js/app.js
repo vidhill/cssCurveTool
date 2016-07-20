@@ -105,41 +105,42 @@
 
         pointArr.forEach(function(point){
 
+            var refContain = {};
 
             var g = doc.g(); // group to hold
 
-            var line = g.path(`M${point.x},${timeLine.yPos},v-${timeLine.height}`)
+            refContain.line = g.path(`M${point.x},${timeLine.yPos},v-${timeLine.height}`)
                 .attr({
                     stroke: "#000",
                     strokeOpacity: 0.5,
                     strokeWidth: 1
                 });
 
-            var thumb = g.rect(point.x, timeLine.yPos , thumbDimensions.width, thumbDimensions.height)
+            refContain.thumb = g.rect(point.x, timeLine.yPos , thumbDimensions.width, thumbDimensions.height)
                 .transform(`translate(-${thumbDimensions.width/2} -${thumbDimensions.height/2})`);
 
 
-            var labelText = g.text(point.x, timeLine.yPos + 30, helpers.decimalToPercentage(point.offset))
+            refContain.labelText = g.text(point.x, timeLine.yPos + 30, helpers.decimalToPercentage(point.offset))
                 .attr({
                     textAnchor: 'middle'
                 });
 
-            var timeText = g.text(point.x, timeLine.yPos + 60, helpers.toTimeScale(point.offset, 500))
+            refContain.timeText = g.text(point.x, timeLine.yPos + 60, helpers.toTimeScale(point.offset, 500))
                 .attr({
                     textAnchor: 'middle'
                 });
 
-            var pathPoint = g.circle(point.x, point.y, 5);
+            refContain.pathPoint = g.circle(point.x, point.y, 5);
 
             if(helpers.isObject(point.forwardCurve)){
-                drawHandle(point, point.forwardCurve, g);
+                refContain.forwardHandle = drawHandle(point, point.forwardCurve, g);
             }
 
             if(helpers.isObject(point.backwardCurve)){
-                drawHandle(point, point.backwardCurve, g);
+                refContain.backHandle = drawHandle(point, point.backwardCurve, g);
             }
 
-
+            return refContain;
 
         });
 
