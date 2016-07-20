@@ -17,7 +17,7 @@ export default function (snap, docSetting) {
     var objRef = snap.path(`M${tLineSetting.xPos} ${tLineSetting.yPos} h${tLineSetting.width}`)
         .attr({
             stroke: "#000",
-            strokeWidth: 2
+            strokeWidth: 1
         });
 
     tLineSetting.objRef = objRef;

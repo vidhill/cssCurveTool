@@ -152,18 +152,24 @@
 
 
         function drawHandle(point, curvePoint, group) {
+
+            let objectRef = {};
+
             let handleColour = "#0000AA";
             let handleSetting = {
                 stroke: handleColour,
                 strokeWidth: 1
             };
 
-            group.line(point.x, point.y, curvePoint.x, curvePoint.y)
+            objectRef.line = group.line(point.x, point.y, curvePoint.x, curvePoint.y)
                 .attr(handleSetting);
-            group.circle(curvePoint.x, curvePoint.y, 5)
+            objectRef.circle = group.circle(curvePoint.x, curvePoint.y, 5)
                 .attr({
                     fill: handleColour
                 });
+                //.drag();
+
+            return objectRef;
 
         }
 
