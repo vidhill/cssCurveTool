@@ -22,7 +22,7 @@
 
 
     function addKeyFramesToTimeline(keyFrames) {
-        var thumbDimensions = {
+        const thumbDimensions = {
             width: 5,
             height: 15
         };
@@ -32,12 +32,12 @@
 
         var calculateYPosFactory = function (vals) {
 
-            var { maxVal, minVal } = vals;
+            let { maxVal, minVal } = vals;
 
-            var distance = maxVal - minVal;
+            let distance = maxVal - minVal;
 
             return function(val){
-                var factor = (val + Math.abs(minVal))/distance;
+                let factor = (val + Math.abs(minVal))/distance;
 
                 return timeLine.yPos - (timeLine.height * factor);
             };
@@ -65,77 +65,31 @@
         });
 
         var pointArr = points.reduce(pointsToCubic, []);
-
-        console.log(pointArr);
-
+        var path = createSegments(pointArr);
 
 
-        pointArr.forEach(function(point){
+        function createSegments(points) {
 
-            var g = doc.g(); // group to hold
+            var pathStr = '';
 
-            var line = doc.path(`M${point.x},${timeLine.yPos},v-${timeLine.height}`)
-                .attr({
-                    stroke: "#000",
-                    strokeOpacity: 0.5,
-                    strokeWidth: 1
-                });
-
-            var thumb = doc.rect(point.x, timeLine.yPos , thumbDimensions.width, thumbDimensions.height)
-                .transform(`translate(-${thumbDimensions.width/2} -${thumbDimensions.height/2})`);
-
-
-            var labelText = doc.text(point.x, timeLine.yPos + 30, helpers.decimalToPercentage(point.offset))
-                .attr({
-                    textAnchor: 'middle'
-                });
-
-            var timeText = doc.text(point.x, timeLine.yPos + 60, helpers.toTimeScale(point.offset, 500))
-                .attr({
-                    textAnchor: 'middle'
-                });
-
-            var pathPoint = doc.circle(point.x, point.y, 5);
-
-            if(helpers.isObject(point.forwardCurve)){
-                doc.circle(point.forwardCurve.x, point.forwardCurve.y, 5);
+            for(let i = 0, len = points.length - 1; i < len; i++ ){
+                // curve between current point and next
+                pathStr += createSegment(points[i], points[i+1])
             }
 
-            if(helpers.isObject(point.backwardCurve)){
-                doc.circle(point.backwardCurve.x, point.backwardCurve.y, 5);
-            }
+            return pathStr;
 
-
-            g.add(line, thumb, labelText, timeText, pathPoint);
-
-        });
-
-        function pointsToPaths(point, index) {
-            let type = (index === 0) ? 'M' : 'L';
-
-            return type + point.x + ' ' + point.y;
         }
-
-
-
-        var pointStrings = pointArr.map(pointsToPaths);
-
-
-        var path = "";
-
-        path += createSegment(pointArr[0], pointArr[1]); // curve 1
-        path += createSegment(pointArr[1], pointArr[2]); // curve 2
-        path += createSegment(pointArr[2], pointArr[3]); // curve 3
 
 
         function createSegment(pointA, pointB) {
             let segment = '';
 
-            segment += ( 'M' + pointA.x + ' ' + pointA.y + ' ' )
-            segment += ( 'C' + pointA.forwardCurve.x + ' ' + pointA.forwardCurve.y + ' ' )
+            segment += ( 'M' + pointA.x + ' ' + pointA.y + ' ' );
+            segment += ( 'C' + pointA.forwardCurve.x + ' ' + pointA.forwardCurve.y + ' ' );
 
-            segment += ( pointB.backwardCurve.x + ' ' + pointB.backwardCurve.y + ' ' )
-            segment += ( pointB.x + ' ' + pointB.y + ' ' )
+            segment += ( pointB.backwardCurve.x + ' ' + pointB.backwardCurve.y + ' ' );
+            segment += ( pointB.x + ' ' + pointB.y + ' ' );
 
             return segment;
 
@@ -147,14 +101,81 @@
                 stroke: "#FF0000",
                 strokeWidth: 2,
                 fill: 'none'
-            })
+            });
 
+        pointArr.forEach(function(point){
+
+
+            var g = doc.g(); // group to hold
+
+            var line = g.path(`M${point.x},${timeLine.yPos},v-${timeLine.height}`)
+                .attr({
+                    stroke: "#000",
+                    strokeOpacity: 0.5,
+                    strokeWidth: 1
+                });
+
+            var thumb = g.rect(point.x, timeLine.yPos , thumbDimensions.width, thumbDimensions.height)
+                .transform(`translate(-${thumbDimensions.width/2} -${thumbDimensions.height/2})`);
+
+
+            var labelText = g.text(point.x, timeLine.yPos + 30, helpers.decimalToPercentage(point.offset))
+                .attr({
+                    textAnchor: 'middle'
+                });
+
+            var timeText = g.text(point.x, timeLine.yPos + 60, helpers.toTimeScale(point.offset, 500))
+                .attr({
+                    textAnchor: 'middle'
+                });
+
+            var pathPoint = g.circle(point.x, point.y, 5);
+
+            if(helpers.isObject(point.forwardCurve)){
+                drawHandle(point, point.forwardCurve, g);
+            }
+
+            if(helpers.isObject(point.backwardCurve)){
+                drawHandle(point, point.backwardCurve, g);
+            }
+
+
+
+        });
+
+        function pointsToPaths(point, index) {
+            let type = (index === 0) ? 'M' : 'L';
+
+            return type + point.x + ' ' + point.y;
+        }
+
+
+        function drawHandle(point, curvePoint, group) {
+            let handleColour = "#0000AA";
+            let handleSetting = {
+                stroke: handleColour,
+                strokeWidth: 1
+            };
+
+            group.line(point.x, point.y, curvePoint.x, curvePoint.y)
+                .attr(handleSetting);
+            group.circle(curvePoint.x, curvePoint.y, 5)
+                .attr({
+                    fill: handleColour
+                });
+
+        }
+
+        // var pointStrings = pointArr.map(pointsToPaths);
+
+        /*
         doc.path(pointStrings.join(' '))
             .attr({
                 stroke: "#0000FF",
                 strokeWidth: 2,
                 fill: 'none'
-            })
+            });
+        */
     }
 
 
