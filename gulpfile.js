@@ -60,4 +60,9 @@ const gulp = require('gulp'),
             .pipe(gulp.dest("dist"));
     });
 
-    gulp.task('default', ['html', 'js']);
+    gulp.task("jslibs", () => {
+        return gulp.src("./node_modules/snapsvg/dist/*")
+            .pipe(gulp.dest("dist/libs"));
+    });
+
+    gulp.task('default', ['html', 'js', 'jslibs']);
