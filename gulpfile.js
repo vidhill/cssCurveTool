@@ -24,7 +24,7 @@ const gulp = require('gulp'),
             Object.assign(browserifyOpts, {
                 cache: {},
                 packageCache: {},
-                plugin: [watchify]})
+                plugin: [watchify]});
         }
 
         var b = browserify(browserifyOpts);
@@ -51,18 +51,18 @@ const gulp = require('gulp'),
     const watchBundle = setupBrowserify(true);
     const buildBundle = setupBrowserify(false);
 
-    gulp.task("watch", watchBundle);
-    gulp.task("js", buildBundle);
+    gulp.task('watch', watchBundle);
+    gulp.task('js', buildBundle);
 
 
-    gulp.task("html", () => {
-        return gulp.src("src/*.html")
-            .pipe(gulp.dest("dist"));
+    gulp.task('html', () => {
+        return gulp.src('src/*.html')
+            .pipe(gulp.dest('dist'));
     });
 
-    gulp.task("jslibs", () => {
-        return gulp.src("./node_modules/snapsvg/dist/*")
-            .pipe(gulp.dest("dist/libs"));
+    gulp.task('jslibs', () => {
+        return gulp.src('./node_modules/snapsvg/dist/*')
+            .pipe(gulp.dest('dist/libs'));
     });
 
     gulp.task('default', ['html', 'js', 'jslibs']);
