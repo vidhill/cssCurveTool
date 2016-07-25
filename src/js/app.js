@@ -12,7 +12,7 @@
         height: 500,
         sidePad: 40,
         bottomPad: 100,
-        bgColour: "#bada55"
+        bgColour: '#bada55'
     };
 
     var doc = Snap(docSetting.width, docSetting.height);
@@ -47,13 +47,10 @@
         var valsArr = keyFrames.map(key => key.opacity);
 
         var maxMin = {
-            maxVal: Math.max.apply(null, valsArr),
-            minVal: Math.min.apply(null, valsArr)
+            maxVal: Math.max(...valsArr),
+            minVal: Math.min(...valsArr)
         };
 
-
-
-        // var calculateXpos = calculateYPosFactory();
         var calculateYpos = calculateYPosFactory(maxMin);
 
         var points = keyFrames.map(keyFrame => {
@@ -74,7 +71,7 @@
 
             for(let i = 0, len = points.length - 1; i < len; i++ ){
                 // curve between current point and next
-                pathStr += createSegment(points[i], points[i+1])
+                pathStr += createSegment(points[i], points[i+1]);
             }
 
             return pathStr;
@@ -83,22 +80,22 @@
 
 
         function createSegment(pointA, pointB) {
-            let segment = '';
+            let controlPoint = [];
 
-            segment += ( 'M' + pointA.x + ' ' + pointA.y + ' ' );
-            segment += ( 'C' + pointA.forwardCurve.x + ' ' + pointA.forwardCurve.y + ' ' );
+            controlPoint[0] = 'M' + [ pointA.x, pointA.y ].join(' ');
+            controlPoint[1] = 'C' + [ pointA.forwardCurve.x, pointA.forwardCurve.y ].join(' ');
 
-            segment += ( pointB.backwardCurve.x + ' ' + pointB.backwardCurve.y + ' ' );
-            segment += ( pointB.x + ' ' + pointB.y + ' ' );
+            controlPoint[2] = [ pointB.backwardCurve.x, pointB.backwardCurve.y ].join(' ');
+            controlPoint[3] = [ pointB.x, pointB.y].join(' ');
 
-            return segment;
+            return controlPoint.join(' ');
 
         }
 
 
         doc.path(path)
             .attr({
-                stroke: "#FF0000",
+                stroke: '#FF0000',
                 strokeWidth: 2,
                 fill: 'none'
             });
@@ -111,7 +108,7 @@
 
             refContain.line = g.path(`M${point.x},${timeLine.yPos},v-${timeLine.height}`)
                 .attr({
-                    stroke: "#000",
+                    stroke: '#000',
                     strokeOpacity: 0.5,
                     strokeWidth: 1
                 });
@@ -147,7 +144,7 @@
         function pointsToPaths(point, index) {
             let type = (index === 0) ? 'M' : 'L';
 
-            return type + point.x + ' ' + point.y;
+            return type + [ point.x, point.y ].join(' ');
         }
 
 
@@ -155,7 +152,7 @@
 
             let objectRef = {};
 
-            let handleColour = "#0000AA";
+            let handleColour = '#0000AA';
             let handleSetting = {
                 stroke: handleColour,
                 strokeWidth: 1
@@ -178,7 +175,7 @@
         /*
         doc.path(pointStrings.join(' '))
             .attr({
-                stroke: "#0000FF",
+                stroke: '#0000FF',
                 strokeWidth: 2,
                 fill: 'none'
             });
