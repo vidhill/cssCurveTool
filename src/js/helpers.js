@@ -8,5 +8,8 @@ export default {
     },
     toTimeScale: function (val, total) {
       return (total*val).toFixed(2) + 'ms';
+    },
+    toSpacedString: function (...strings) {
+        return strings.join(' ');
     }
 };

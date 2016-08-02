@@ -5,7 +5,11 @@
     import helpers from './helpers.js';
     import init from './setup.js';
     import pointsToCubic from './points-to-cubic.js';
+    // import keyFrameFactory from './points-store-factory';
+    import createTimePointFactory from './create-timepoint-factory.js';
 
+
+    // const keyFrameStore = keyFrameFactory();
 
     var docSetting = {
         width: 800,
@@ -19,13 +23,9 @@
 
     var timeLine = init(doc, docSetting);
 
-
+    const createTimePoint = createTimePointFactory(doc, timeLine);
 
     function addKeyFramesToTimeline(keyFrames) {
-        const thumbDimensions = {
-            width: 5,
-            height: 15
-        };
         var calculateXpos = function(perc){
             return timeLine.xPos + (timeLine.width * perc);
         };
@@ -82,16 +82,15 @@
         function createSegment(pointA, pointB) {
             let controlPoint = [];
 
-            controlPoint[0] = 'M' + [ pointA.x, pointA.y ].join(' ');
-            controlPoint[1] = 'C' + [ pointA.forwardCurve.x, pointA.forwardCurve.y ].join(' ');
+            controlPoint[0] = 'M' + helpers.toSpacedString(pointA.x, pointA.y);
+            controlPoint[1] = 'C' + helpers.toSpacedString(pointA.forwardCurve.x, pointA.forwardCurve.y);
 
-            controlPoint[2] = [ pointB.backwardCurve.x, pointB.backwardCurve.y ].join(' ');
-            controlPoint[3] = [ pointB.x, pointB.y].join(' ');
+            controlPoint[2] = helpers.toSpacedString(pointB.backwardCurve.x, pointB.backwardCurve.y);
+            controlPoint[3] = helpers.toSpacedString(pointB.x, pointB.y);
 
             return controlPoint.join(' ');
 
         }
-
 
         doc.path(path)
             .attr({
@@ -102,42 +101,7 @@
 
         pointArr.forEach(function(point){
 
-            var refContain = {};
-
-            var g = doc.g(); // group to hold
-
-            refContain.line = g.path(`M${point.x},${timeLine.yPos},v-${timeLine.height}`)
-                .attr({
-                    stroke: '#000',
-                    strokeOpacity: 0.5,
-                    strokeWidth: 1
-                });
-
-            refContain.thumb = g.rect(point.x, timeLine.yPos , thumbDimensions.width, thumbDimensions.height)
-                .transform(`translate(-${thumbDimensions.width/2} -${thumbDimensions.height/2})`);
-
-
-            refContain.labelText = g.text(point.x, timeLine.yPos + 30, helpers.decimalToPercentage(point.offset))
-                .attr({
-                    textAnchor: 'middle'
-                });
-
-            refContain.timeText = g.text(point.x, timeLine.yPos + 60, helpers.toTimeScale(point.offset, 500))
-                .attr({
-                    textAnchor: 'middle'
-                });
-
-            refContain.pathPoint = g.circle(point.x, point.y, 5);
-
-            if(helpers.isObject(point.forwardCurve)){
-                refContain.forwardHandle = drawHandle(point, point.forwardCurve, g);
-            }
-
-            if(helpers.isObject(point.backwardCurve)){
-                refContain.backHandle = drawHandle(point, point.backwardCurve, g);
-            }
-
-            return refContain;
+            createTimePoint(point);
 
         });
 
@@ -147,28 +111,6 @@
             return type + [ point.x, point.y ].join(' ');
         }
 
-
-        function drawHandle(point, curvePoint, group) {
-
-            let objectRef = {};
-
-            let handleColour = '#0000AA';
-            let handleSetting = {
-                stroke: handleColour,
-                strokeWidth: 1
-            };
-
-            objectRef.line = group.line(point.x, point.y, curvePoint.x, curvePoint.y)
-                .attr(handleSetting);
-            objectRef.circle = group.circle(curvePoint.x, curvePoint.y, 5)
-                .attr({
-                    fill: handleColour
-                });
-                //.drag();
-
-            return objectRef;
-
-        }
 
         // var pointStrings = pointArr.map(pointsToPaths);
 
