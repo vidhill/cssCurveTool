@@ -5,11 +5,11 @@
     import helpers from './helpers.js';
     import init from './setup.js';
     import pointsToCubic from './points-to-cubic.js';
-    // import keyFrameFactory from './points-store-factory';
+    import keyFrameFactory from './points-store-factory';
     import createTimePointFactory from './create-timepoint-factory.js';
 
 
-    // const keyFrameStore = keyFrameFactory();
+    const keyFrameStore = keyFrameFactory();
 
     var docSetting = {
         width: 800,
@@ -133,4 +133,6 @@
         { transform: 'scale(.6)', opacity: 0, offset: 1 }
     ];
 
-    addKeyFramesToTimeline(myKeyFrames);
+    let currKeyFrames = keyFrameStore.setKeyFrames(myKeyFrames);
+
+    addKeyFramesToTimeline(currKeyFrames);
