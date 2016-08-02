@@ -5,13 +5,13 @@
     import helpers from './helpers.js';
     import init from './setup.js';
     import pointsToCubic from './points-to-cubic.js';
-    import keyFrameFactory from './points-store-factory';
+    import keyFrameFactory from './keyframe-store-factory';
     import createTimePointFactory from './create-timepoint-factory.js';
 
 
     const keyFrameStore = keyFrameFactory();
 
-    var docSetting = {
+    const docSetting = {
         width: 800,
         height: 500,
         sidePad: 40,
@@ -19,13 +19,14 @@
         bgColour: '#bada55'
     };
 
-    var doc = Snap(docSetting.width, docSetting.height);
+    const doc = Snap(docSetting.width, docSetting.height);
 
     var timeLine = init(doc, docSetting);
 
     const createTimePoint = createTimePointFactory(doc, timeLine);
 
     function addKeyFramesToTimeline(keyFrames) {
+
         var calculateXpos = function(perc){
             return timeLine.xPos + (timeLine.width * perc);
         };
@@ -126,7 +127,7 @@
 
 
 
-    var myKeyFrames = [
+    let myKeyFrames = [
         { transform: 'scale(1)', opacity: 1, offset: 0 },
         { transform: 'scale(.5)', opacity: 0, offset: .33333 },
         { transform: 'scale(.667)', opacity: 0.5, offset: .66666 },
