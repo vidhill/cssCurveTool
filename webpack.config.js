@@ -1,9 +1,9 @@
-var path = require("path");
+var path = require('path');
 
 module.exports = {
   entry: './src/js/app.js',
   output: {
-    path: 'webp',
+    path: path.resolve(__dirname, 'webp'),
     filename: 'bundle.js'
   },
   module: {
@@ -17,9 +17,7 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: [
-            ['es2015', {
-              'modules': false
-            }]
+            ['es2015', { 'modules': false }]
           ]
         }
 
