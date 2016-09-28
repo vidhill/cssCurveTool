@@ -4,27 +4,49 @@ var path = require('path'),
     webpack = require('webpack'),
     resolve = path.resolve;
 
-process.env.BABEL_ENV = 'test';
+// process.env.BABEL_ENV = 'test';
 
 module.exports = env => {
 
-    var addPlugin = (add, plugin) =>{
-        add ? plugin : undefined;
+    var addPlugin = function(add, plugin){
+        return (add === true ) ? plugin : undefined;
     };
 
-    var ifProd = plugin => {
-        addPlugin(env.prod, plugin);
+    var ifProd = function(plugin) {
+        return addPlugin(env.prod, plugin);
     };
 
-    var removeEmpty = i => {
-        i !== undefined;
+    var removeEmpty = function(myArr) {
+        return myArr.filter(function(i){
+            return i !== undefined;
+        });
     };
+
+
+    var myPlugins = removeEmpty([
+        ifProd(new webpack.optimize.DedupePlugin()),
+        ifProd(new webpack.LoaderOptionsPlugin({
+            minimize: true,
+            debug: false
+        })),
+        ifProd(new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: 'production'
+            }
+        })),
+        ifProd(new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                screw_ie8: true, // no SVG, no ie8
+                warnings: true
+            }
+        }))
+    ]);
 
     return {
         devtool: 'source-map',
         entry: './src/js/app.js',
         output: {
-            path: resolve(__dirname, 'webp'),
+            path: resolve(__dirname, 'dist/js'),
             filename: 'bundle.js'
         },
         module: {
@@ -39,25 +61,6 @@ module.exports = env => {
                 }
             ]
         },
-        plugins: [
-            ifProd( new webpack.optimize.DedupePlugin() ),
-            ifProd( new webpack.LoaderOptionsPlugin({
-                minimize: true,
-                debug: false
-            }),
-            ifProd( new webpack.DefinePlugin({
-                'process.env': {
-                    NODE_ENV: 'production'
-                }
-            })),
-            ifProd( new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    screw_ie8: true, // no SVG, no ie8
-                    warnings: true,
-                    sourceMap: true
-                }
-            }))
-           )
-        ].filter(removeEmpty)
+        plugins: myPlugins
     };
 };
