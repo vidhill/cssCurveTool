@@ -4,6 +4,7 @@ logs
 npm-debug.log*
 .idea/*
 dist
+cover
 node_modules
 jspm_packages
 
