@@ -1,10 +1,12 @@
 /* global describe, it, expect */
 
+import helpers from './helpers';
+
 describe('test', ()=>{
     it('works', ()=>{
-        expect(true).to.be.true;
+        expect(helpers.isObject({})).to.be.true;
     });
     it('works as well', ()=>{
-        expect('hi').to.equal('hi');
+        expect(helpers.isObject).to.exist;
     });
 });
