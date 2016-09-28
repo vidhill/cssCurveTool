@@ -10,10 +10,12 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
+            'node_modules/snapsvg/dist/snap.svg.js',
             testGlob,
             srcGlob
         ],
         exclude: [
+            'src/js/app.js'
         ],
         preprocessors: {
             [testGlob]: ['webpack'],
