@@ -57,7 +57,7 @@ module.exports = env => {
             })),
             ifProd( new webpack.optimize.UglifyJsPlugin({
                 compress: {
-                    screw_ie8: true,
+                    screw_ie8: true, // no SVG, no ie8
                     warnings: true,
                     sourceMap: true
                 }
