@@ -1,6 +1,7 @@
 /* global module, require  */
 
-var filesGlob = 'src/js/**.spec.js',
+var testGlob = 'src/js/**.spec.js',
+    srcGlob = 'src/js/**!(test).js',
     webpackEnv = { test: true },
     webpackConfig = require('./webpack.config.js')(webpackEnv);
 
@@ -9,12 +10,14 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
-            filesGlob
+            testGlob,
+            srcGlob
         ],
         exclude: [
         ],
         preprocessors: {
-            [filesGlob]: ['webpack']
+            [testGlob]: ['webpack'],
+            [srcGlob]: ['webpack']
         },
         webpack: webpackConfig,
         webpackMiddleware: {
