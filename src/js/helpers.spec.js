@@ -1,10 +1,10 @@
-/* global describe, it */
+/* global describe, it, expect */
 
 describe('test', ()=>{
     it('works', ()=>{
-      // test
+        expect(true).to.be.true;
     });
     it('works as well', ()=>{
-      // test
+        expect('hi').to.equal('hi');
     });
 });

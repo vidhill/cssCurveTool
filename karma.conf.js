@@ -3,7 +3,7 @@
 module.exports = function(config) {
     config.set({
         basePath: '',
-        frameworks: ['mocha'],
+        frameworks: ['mocha', 'chai'],
         files: [
             'src/js/**.spec.js'
         ],
