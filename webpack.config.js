@@ -1,10 +1,10 @@
-/* global require, process, module, __dirname */
+/* eslint-env node */
 
 var path = require('path'),
     webpack = require('webpack'),
     resolve = path.resolve;
 
-// process.env.BABEL_ENV = 'test';
+process.env.BABEL_ENV = 'test';
 
 module.exports = env => {
 
@@ -57,7 +57,7 @@ module.exports = env => {
                         resolve(__dirname, 'src')
                     ],
                     exclude: /node_modules/,
-                    loader: 'babel-loader'
+                    loader: 'babel!eslint'
                 }
             ]
         },

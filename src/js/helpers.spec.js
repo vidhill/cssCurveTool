@@ -1,13 +1,15 @@
-/* global describe, it, expect */
+/* eslint-env jasmine */
 
 import helpers from './helpers';
 
-describe('test', ()=>{
+describe('The \'isObject\' method', () => {
     it('should return true for an empty object', ()=>{
-        expect(helpers.isObject({})).to.be.true;
-        expect(helpers.isObject(undefined)).to.be.false;
+        expect(helpers.isObject({})).toBe(true);
+    });
+    it('should return false for undefined', ()=>{
+        expect(helpers.isObject(undefined)).toBe(false);
     });
     it('works as well', ()=>{
-        expect(helpers.isObject).to.exist;
+        expect(helpers.isObject).not.toBeUndefined();
     });
 });

@@ -106,12 +106,13 @@
 
         });
 
+        /*
         function pointsToPaths(point, index) {
             let type = (index === 0) ? 'M' : 'L';
 
             return type + [ point.x, point.y ].join(' ');
         }
-
+        */
 
         // var pointStrings = pointArr.map(pointsToPaths);
 
