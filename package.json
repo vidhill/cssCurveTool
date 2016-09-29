@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --env.dev",
+    "build:watch": "npm run build -- --progress --watch",
     "build:prod": "webpack --env.prod",
     "test": "karma start",
     "test:watch": "npm run test -- --auto-watch --no-single-run"
