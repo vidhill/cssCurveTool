@@ -3,7 +3,9 @@
 var testGlob = 'src/js/**.spec.js',
     srcGlob = 'src/js/**!(test).js',
     webpackEnv = { test: true },
-    webpackConfig = require('./webpack.config.js')(webpackEnv);
+    webpackConfig = require('./webpack.config.js')(webpackEnv),
+    reportsFolder = 'karma-html-reports'
+    ;
 
 module.exports = function(config) {
     config.set({
@@ -27,17 +29,17 @@ module.exports = function(config) {
         },
         reporters: ['spec', 'coverage', 'html'],
         htmlReporter: {
-            outputDir: 'karma_html', // where to put the reports
+            outputDir: reportsFolder, // where to put the reports
             focusOnFailures: true, // reports show failures on start
             namedFiles: false, // name files instead of creating sub-directories
             pageTitle: null, // page title for reports; browser info by default
             urlFriendlyName: false, // simply replaces spaces with _ for files/dirs
-            reportName: 'report-summary-filename', // report summary filename; browser info by default
+            reportName: 'unit-test-report', // report summary filename; browser info by default
         },
         coverageReporter: {
             reporters: [
-                { type: 'lcov', dir:'cover', subdir: '.' },
-                { type: 'json', dir:'cover', subdir: '.' },
+                { type: 'lcov', dir: reportsFolder, subdir: 'coverage' },
+                { type: 'json', dir: reportsFolder, subdir: 'coverage' },
                 { type: 'text-summary' }
             ]
         },
