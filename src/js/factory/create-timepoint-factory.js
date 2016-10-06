@@ -32,6 +32,11 @@ export default function(doc, timeLine) {
 
     return function(point) {
         var refContain = {
+            updatePoint(newPoint){
+                this.setLabelText( helpers.decimalToPercentage(newPoint.offset) );
+                this.setTimeText( helpers.toTimeScale(newPoint.offset, 500) );
+                this.setPathPointYPos(newPoint.y);
+            },
             setLabelText(text){
                 this.labelText.node.textContent = text;
             },
@@ -49,9 +54,7 @@ export default function(doc, timeLine) {
 
         refContain = renderKeyFrame(refContain, g, timeLine);
 
-        refContain.setLabelText( helpers.decimalToPercentage(point.offset) );
-        refContain.setTimeText( helpers.toTimeScale(point.offset, 500) );
-        refContain.setPathPointYPos(point.y);
+        refContain.updatePoint(point);
 
         if(helpers.isObject(point.forwardCurve)){
             refContain.forwardHandle = drawHandle(point, point.forwardCurve, doc);
