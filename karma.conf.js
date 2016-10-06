@@ -1,7 +1,9 @@
 /* eslint-env node */
 
-var testGlob = 'src/js/**.spec.js',
-    srcGlob = 'src/js/**!(test).js',
+process.env.BABEL_ENV = 'test';
+
+var testGlob = 'src/js/**/**.spec.js',
+    srcGlob = 'src/js/**/**!(test).js',
     webpackEnv = { test: true },
     webpackConfig = require('./webpack.config.js')(webpackEnv),
     reportsFolder = 'karma-html-reports'
