@@ -15,15 +15,17 @@ export const segmentMethods = {
     }
 };
 
-export default function(points) {
+export default function(pointsArray) {
 
-    var pathStr = '';
+    let result,
+        pathStrArr = [];
 
-    for(let i = 0, len = points.length - 1; i < len; i++ ){
+    for(let i = 0, len = pointsArray.length - 1; i < len; i++ ){
         // curve between current point and next
-        pathStr += segmentMethods.cubicBezier(points[i], points[i+1]);
+        result = segmentMethods.cubicBezier(pointsArray[i], pointsArray[i+1]);
+        pathStrArr.push(result);
     }
 
-    return pathStr;
+    return pathStrArr.join(' ');
 
 }
