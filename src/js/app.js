@@ -5,8 +5,8 @@
     import helpers from './helpers.js';
     import init from './setup.js';
     import pointsToCubic from './points-to-cubic.js';
-    import keyFrameFactory from './keyframe-store-factory';
-    import createTimePointFactory from './create-timepoint-factory.js';
+    import keyFrameFactory from './factory/keyframe-store-factory';
+    import createTimePointFactory from './factory/create-timepoint-factory.js';
 
 
     const keyFrameStore = keyFrameFactory();
@@ -114,10 +114,10 @@
 
         const timePoints = pointArr.map(function(point){
 
-            let foo = createTimePoint(point);
-            containAll.add(foo.group);
+            let pointObj = createTimePoint(point);
+            containAll.add(pointObj.group);
 
-            return foo;
+            return pointObj;
 
         });
 

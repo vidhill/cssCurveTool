@@ -2,7 +2,7 @@
  * Created by davidhill on 27/07/2016.
  */
 
-import helpers from './helpers.js';
+import helpers from '../helpers.js';
 
 
 const thumbDimensions = {
