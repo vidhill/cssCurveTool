@@ -4,7 +4,6 @@ var path = require('path'),
     webpack = require('webpack'),
     resolve = path.resolve;
 
-process.env.BABEL_ENV = 'test';
 
 module.exports = env => {
 
