@@ -2,12 +2,12 @@
  * Created by davidhill on 11/07/2016.
  */
 
-    import helpers from './helpers.js';
+    // import helpers from './helpers.js';
     import init from './setup.js';
     import pointsToCubic from './points-to-cubic.js';
     import keyFrameFactory from './factory/keyframe-store-factory';
     import createTimePointFactory from './factory/create-timepoint-factory.js';
-
+    import createSegments from './path-calculation/create-segments.js';
 
     const keyFrameStore = keyFrameFactory();
 
@@ -76,33 +76,6 @@
         var pointArr = points.reduce(pointsToCubic, []);
         var path = createSegments(pointArr);
 
-
-        function createSegments(points) {
-
-            var pathStr = '';
-
-            for(let i = 0, len = points.length - 1; i < len; i++ ){
-                // curve between current point and next
-                pathStr += createSegment(points[i], points[i+1]);
-            }
-
-            return pathStr;
-
-        }
-
-
-        function createSegment(pointA, pointB) {
-            let controlPoint = [];
-
-            controlPoint[0] = 'M' + helpers.toSpacedString(pointA.x, pointA.y);
-            controlPoint[1] = 'C' + helpers.toSpacedString(pointA.forwardCurve.x, pointA.forwardCurve.y);
-
-            controlPoint[2] = helpers.toSpacedString(pointB.backwardCurve.x, pointB.backwardCurve.y);
-            controlPoint[3] = helpers.toSpacedString(pointB.x, pointB.y);
-
-            return controlPoint.join(' ');
-
-        }
 
         containAll.path(path)
             .attr({
