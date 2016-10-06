@@ -33,28 +33,27 @@
 
     // console.log(timeLine);
 
+    var calculateYPosFactory = function (minMaxVals) {
+
+        let { maxVal, minVal } = minMaxVals;
+
+        let distance = maxVal - minVal;
+
+        return function(val){
+            let factor = (val + Math.abs(minVal))/distance;
+
+            return timeLine.yPos - (timeLine.height * factor);
+        };
+
+    };
+
+    var calculateXpos = function(perc){
+        return timeLine.width * perc;
+    };
 
     const createTimePoint = createTimePointFactory(containAll, timeLine);
 
     function addKeyFramesToTimeline(keyFrames) {
-
-        var calculateXpos = function(perc){
-            return timeLine.width * perc;
-        };
-
-        var calculateYPosFactory = function (vals) {
-
-            let { maxVal, minVal } = vals;
-
-            let distance = maxVal - minVal;
-
-            return function(val){
-                let factor = (val + Math.abs(minVal))/distance;
-
-                return timeLine.yPos - (timeLine.height * factor);
-            };
-
-        };
 
         var valsArr = keyFrames.map(key => key.opacity);
 
@@ -74,10 +73,10 @@
         });
 
         var pointArr = points.reduce(pointsToCubic, []);
-        var path = createSegments(pointArr);
+        var bezierPath = createSegments(pointArr);
 
 
-        containAll.path(path)
+        containAll.path(bezierPath)
             .attr({
                 stroke: '#FF0000',
                 strokeWidth: 2,
@@ -94,27 +93,9 @@
 
         });
 
-        // move everting over to the right
-        // containAll.transform(`translate(${docSetting.sidePad} 0)`);
+        //timePoints[1].updatePoint();
 
-        /*
-        function pointsToPaths(point, index) {
-            let type = (index === 0) ? 'M' : 'L';
-
-            return type + [ point.x, point.y ].join(' ');
-        }
-        */
-
-        // var pointStrings = pointArr.map(pointsToPaths);
-
-        /*
-        doc.path(pointStrings.join(' '))
-            .attr({
-                stroke: '#0000FF',
-                strokeWidth: 2,
-                fill: 'none'
-            });
-        */
+        return timePoints;
     }
 
 
