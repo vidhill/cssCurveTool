@@ -3,12 +3,7 @@
  */
 
 import helpers from '../helpers.js';
-
-
-const thumbDimensions = {
-    width: 5,
-    height: 15
-};
+import renderKeyFrame from '../dom/create-keyframe.js';
 
 function drawHandle(point, curvePoint, doc) {
 
@@ -36,34 +31,27 @@ function drawHandle(point, curvePoint, doc) {
 export default function(doc, timeLine) {
 
     return function(point) {
-        var refContain = {};
+        var refContain = {
+            setLabelText(text){
+                this.labelText.node.textContent = text;
+            },
+            setTimeText(text){
+                this.timeText.node.textContent = text;
+            },
+            setPathPointYPos(yPos){
+                this.pathPoint.attr({cy: yPos});
+            }
+        };
 
         var g = doc.g(); // group to hold
 
         g.transform(`translate(${point.x} 0)`);
 
-        refContain.line = g.path(`M0,${timeLine.yPos},v-${timeLine.height}`)
-            .attr({
-                stroke: '#000',
-                strokeOpacity: 0.5,
-                strokeWidth: 1
-            });
+        refContain = renderKeyFrame(refContain, g, timeLine);
 
-        refContain.thumb = g.rect(0, timeLine.yPos , thumbDimensions.width, thumbDimensions.height)
-            .transform(`translate(-${thumbDimensions.width/2} -${thumbDimensions.height/2})`);
-
-
-        refContain.labelText = g.text(0, timeLine.yPos + 30, helpers.decimalToPercentage(point.offset))
-            .attr({
-                textAnchor: 'middle'
-            });
-
-        refContain.timeText = g.text(0, timeLine.yPos + 60, helpers.toTimeScale(point.offset, 500))
-            .attr({
-                textAnchor: 'middle'
-            });
-
-        refContain.pathPoint = g.circle(0, point.y, 5);
+        refContain.setLabelText( helpers.decimalToPercentage(point.offset) );
+        refContain.setTimeText( helpers.toTimeScale(point.offset, 500) );
+        refContain.setPathPointYPos(point.y);
 
         if(helpers.isObject(point.forwardCurve)){
             refContain.forwardHandle = drawHandle(point, point.forwardCurve, doc);
