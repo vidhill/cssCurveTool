@@ -11,6 +11,7 @@
 
     const keyFrameStore = keyFrameFactory();
 
+
     const docSetting = {
         width: 800,
         height: 500,
@@ -21,14 +22,24 @@
 
     const doc = Snap(docSetting.width, docSetting.height);
 
-    var timeLine = init(doc, docSetting);
+    // draw background
+    doc.rect(0, 0, docSetting.width, docSetting.height).attr({
+        fill: docSetting.bgColour
+    });
 
-    const createTimePoint = createTimePointFactory(doc, timeLine);
+
+    const containAll = doc.g();
+    const timeLine = init(containAll, docSetting);
+
+    // console.log(timeLine);
+
+
+    const createTimePoint = createTimePointFactory(containAll, timeLine);
 
     function addKeyFramesToTimeline(keyFrames) {
 
         var calculateXpos = function(perc){
-            return timeLine.xPos + (timeLine.width * perc);
+            return timeLine.width * perc;
         };
 
         var calculateYPosFactory = function (vals) {
@@ -93,18 +104,25 @@
 
         }
 
-        doc.path(path)
+        containAll.path(path)
             .attr({
                 stroke: '#FF0000',
                 strokeWidth: 2,
                 fill: 'none'
             });
 
-        pointArr.forEach(function(point){
 
-            createTimePoint(point);
+        const timePoints = pointArr.map(function(point){
+
+            let foo = createTimePoint(point);
+            containAll.add(foo.group);
+
+            return foo;
 
         });
+
+        // move everting over to the right
+        // containAll.transform(`translate(${docSetting.sidePad} 0)`);
 
         /*
         function pointsToPaths(point, index) {
