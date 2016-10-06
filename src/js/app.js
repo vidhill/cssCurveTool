@@ -31,20 +31,15 @@
     const containAll = doc.g();
     const timeLine = init(containAll, docSetting);
 
-    // console.log(timeLine);
+    var calculateYPosFactory = function (minMaxVals, maxHeightRange, zeroYPosition) {
 
-    var calculateYPosFactory = function (minMaxVals) {
-
-        let { maxVal, minVal } = minMaxVals;
-
-        let distance = maxVal - minVal;
+        const { maxVal, minVal } = minMaxVals;
+        const distance = maxVal - minVal;
 
         return function(val){
-            let factor = (val + Math.abs(minVal))/distance;
-
-            return timeLine.yPos - (timeLine.height * factor);
+            const fractionTotal = (val + Math.abs(minVal))/distance;
+            return zeroYPosition - (maxHeightRange * fractionTotal);
         };
-
     };
 
     var calculateXpos = function(perc){
@@ -62,7 +57,7 @@
             minVal: Math.min(...valsArr)
         };
 
-        var calculateYpos = calculateYPosFactory(maxMin);
+        var calculateYpos = calculateYPosFactory(maxMin, timeLine.height, timeLine.yPos);
 
         var points = keyFrames.map(keyFrame => {
             return {
@@ -97,7 +92,6 @@
 
         return timePoints;
     }
-
 
 
     let myKeyFrames = [
