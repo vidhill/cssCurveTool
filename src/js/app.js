@@ -3,7 +3,7 @@
  */
 
     // import helpers from './helpers.js';
-    import init from './setup.js';
+    import init from './dom/setup.js';
     import pointsToCubic from './points-to-cubic.js';
 
     import keyFrameFactory from './factory/keyframe-store-factory';
