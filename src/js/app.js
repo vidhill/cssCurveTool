@@ -5,8 +5,11 @@
     // import helpers from './helpers.js';
     import init from './setup.js';
     import pointsToCubic from './points-to-cubic.js';
+
     import keyFrameFactory from './factory/keyframe-store-factory';
     import createTimePointFactory from './factory/create-timepoint-factory.js';
+    import calculateYPosFactory from './factory/calculate-y-pos-factory.js';
+
     import createSegments from './path-calculation/create-segments.js';
 
     const keyFrameStore = keyFrameFactory();
@@ -30,17 +33,6 @@
 
     const containAll = doc.g();
     const timeLine = init(containAll, docSetting);
-
-    var calculateYPosFactory = function (minMaxVals, maxHeightRange, zeroYPosition) {
-
-        const { maxVal, minVal } = minMaxVals;
-        const distance = maxVal - minVal;
-
-        return function(val){
-            const fractionTotal = (val + Math.abs(minVal))/distance;
-            return zeroYPosition - (maxHeightRange * fractionTotal);
-        };
-    };
 
     var calculateXpos = function(perc){
         return timeLine.width * perc;
@@ -89,6 +81,9 @@
         });
 
         //timePoints[1].updatePoint();
+
+        // move everting over to the right
+        containAll.transform(`translate(${docSetting.sidePad} 0)`);
 
         return timePoints;
     }
