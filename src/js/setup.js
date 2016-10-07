@@ -16,7 +16,5 @@ export default function (snap, docSetting) {
             strokeWidth: 1
         });
 
-    //tLineSetting.objRef = objRef;
-
     return tLineSetting;
 }
