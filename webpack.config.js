@@ -25,7 +25,6 @@ module.exports = env => {
 
 
     var myPlugins = removeEmpty([
-        ifProd(new webpack.optimize.DedupePlugin()),
         ifProd(new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
