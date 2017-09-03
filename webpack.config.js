@@ -4,6 +4,7 @@ var path = require('path'),
     webpack = require('webpack'),
     resolve = path.resolve;
 
+
 var fs = require('fs');
 
 module.exports = env => {
@@ -24,7 +25,6 @@ module.exports = env => {
 
 
     var myPlugins = removeEmpty([
-        ifProd(new webpack.optimize.DedupePlugin()),
         ifProd(new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
@@ -81,7 +81,7 @@ module.exports = env => {
                     include: [
                         resolve(__dirname, 'src')
                     ],
-                    loader: 'babel!eslint'
+                    loader: 'babel-loader!eslint-loader'
                 }
             ]
         },
