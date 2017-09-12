@@ -35,9 +35,7 @@ doc.rect(0, 0, docSetting.width, docSetting.height).attr({
 const containAll = doc.g();
 const timeLine = init(containAll, docSetting);
 
-var calculateXpos = function(perc){
-    return timeLine.width * perc;
-};
+var calculateXpos = perc => (timeLine.width * perc);
 
 const createTimePoint = createTimePointFactory(containAll, timeLine);
 
@@ -52,13 +50,11 @@ function addKeyFramesToTimeline(keyFrames) {
 
     var calculateYpos = calculateYPosFactory(maxMin, timeLine.height, timeLine.yPos);
 
-    var points = keyFrames.map(keyFrame => {
-        return {
-            x: calculateXpos(keyFrame.offset),
-            y: calculateYpos(keyFrame.opacity),
-            offset: keyFrame.offset
-        };
-    });
+    var points = keyFrames.map(keyFrame => ({
+        x: calculateXpos(keyFrame.offset),
+        y: calculateYpos(keyFrame.opacity),
+        offset: keyFrame.offset
+    }));
 
     var pointArr = points.reduce(pointsToCubic, []);
     var bezierPath = createSegments(pointArr);
@@ -81,9 +77,7 @@ function addKeyFramesToTimeline(keyFrames) {
 
     });
 
-        //timePoints[1].updatePoint();
-
-        // move everting over to the right
+    // move everting over to the right
     containAll.transform(`translate(${docSetting.sidePad} 0)`);
 
     return timePoints;

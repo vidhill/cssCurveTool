@@ -1,15 +1,15 @@
 
 export default {
-    isObject: function(value){
+    isObject(value){
         return value !== null && typeof value === 'object'; // courtesy of angularjs
     },
-    decimalToPercentage: function(dec){
+    decimalToPercentage(dec){
         return ( dec * 100 ).toFixed(2) + '%';
     },
-    toTimeScale: function (val, total) {
+    toTimeScale(val, total) {
         return (total*val).toFixed(2) + 'ms';
     },
-    toSpacedString: function (...strings) {
+    toSpacedString(...strings) {
         return strings.join(' ');
     }
 };
