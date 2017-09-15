@@ -1,11 +1,12 @@
 /* eslint-env node */
 
-var path = require('path'),
+const path = require('path'),
     webpack = require('webpack'),
-    resolve = path.resolve;
+    resolve = path.resolve,
+    checkstyleFormatter = require('eslint/lib/formatters/checkstyle'),
+    stylishFormatter = require('eslint/lib/formatters/stylish')
+    ;
 
-
-var fs = require('fs');
 
 module.exports = env => {
 
@@ -43,25 +44,11 @@ module.exports = env => {
         new webpack.LoaderOptionsPlugin({
             options: {
                 eslint: {
-                    /*
                     outputReport: {
                         filePath: 'foo.txt',
-                        formatter: require('eslint/lib/formatters/checkstyle')
+                        formatter: checkstyleFormatter
                     },
-                    formatter: require('eslint/lib/formatters/stylish')
-                    */
-                    formatter: function(results){
-                        var formatters =  {
-                            checkstyle: require('eslint/lib/formatters/checkstyle'),
-                            stylish: require('eslint/lib/formatters/stylish'),
-                        };
-                        // parse the lint result in checkstyle format and write out a file
-                        var formatedRes = formatters.checkstyle(results);
-                        fs.writeFileSync( resolve(__dirname, 'dist') + '/checkstyle.xml', formatedRes);
-
-                        // return the default output into the console
-                        return formatters.stylish(results);
-                    }
+                    formatter: stylishFormatter
                 }
             }
         })
